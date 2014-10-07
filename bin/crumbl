@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+begin
+  require 'crumbl'
+  require 'thor'
+rescue LoadError
+  require 'rubygems'
+  require 'crumbl'
+  require 'thor'
+end
+
+class CrumblCmd < Thor
+  desc "decode [COOKIE]", "Decode a Rails 3 cookie [COOKIE]"
+  def decode(cookie)
+    Crumbl.decode cookie
+  end
+
+  desc "encode [DATA] [KEY]", "Encode [DATA] as a Rails 3 cookie signed with secret key [KEY]"
+  def encode(data, key)
+    Crumbl.encode data, key
+  end
+
+  desc "decrypt [COOKIE] [KEY BASE]", "Decrypt Rails 4 [COOKIE] using secret key base [KEY BASE]"
+  method_option :iterations,                   :aliases => "-i", :default => Crumbl::DEFAULT_ITERATIONS, :type => :numeric
+  method_option :encrypted_cookie_salt,        :aliases => "-e", :default => Crumbl::DEFAULT_ENCRYPTED_COOKIE_SALT
+  method_option :encrypted_signed_cookie_salt, :aliases => "-s", :default => Crumbl::DEFAULT_ENCRYPTED_SIGNED_COOKIE_SALT
+  def decrypt(cookie, secret_key_base)
+    Crumbl.decrypt cookie, secret_key_base, options[:iterations], options[:encrypted_cookie_salt], options[:encrypted_signed_cookie_salt]
+  end
+
+  desc "encrypt [DATA] [KEY BASE]", "Encrypt Rails 4 [DATA] using secret key base [KEY BASE]"
+  method_option :iterations,                   :aliases => "-i", :default => Crumbl::DEFAULT_ITERATIONS, :type => :numeric
+  method_option :encrypted_cookie_salt,        :aliases => "-e", :default => Crumbl::DEFAULT_ENCRYPTED_COOKIE_SALT
+  method_option :encrypted_signed_cookie_salt, :aliases => "-s", :default => Crumbl::DEFAULT_ENCRYPTED_SIGNED_COOKIE_SALT
+  def encrypt(data, secret_key_base)
+    Crumbl.encrypt data, secret_key_base, options[:iterations], options[:encrypted_cookie_salt], options[:encrypted_signed_cookie_salt]
+  end
+end
+
+CrumblCmd.start
