@@ -19,7 +19,7 @@ class RailsCookie
     secret = key_generator.generate_key(encrypted_cookie_salt)
     sign_secret = key_generator.generate_key(encrypted_signed_cookie_salt)
     encryptor = ActiveSupport::MessageEncryptor.new(secret, sign_secret)
-    decrypted = encryptor.decrypt_and_verify(message)
+    decrypted = encryptor.decrypt_and_verify(cookie)
     puts "Decrypted: #{decrypted}"
   end
 
@@ -28,7 +28,7 @@ class RailsCookie
     secret = key_generator.generate_key(encrypted_cookie_salt)
     sign_secret = key_generator.generate_key(encrypted_signed_cookie_salt)
     encryptor = ActiveSupport::MessageEncryptor.new(secret, sign_secret)
-    encrypted = encryptor.encrypt_and_sign(message)
+    encrypted = encryptor.encrypt_and_sign(data)
     puts "Encrypted: #{encrypted}"
   end
 end

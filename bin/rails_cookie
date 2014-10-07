@@ -10,9 +10,31 @@ rescue LoadError
 end
 
 class RailsCookieCmd < Thor
-  desc "decode [cookie]", "Decode a Rails 3 cookie [cookie]"
+  desc "decode [COOKIE]", "Decode a Rails 3 cookie [COOKIE]"
   def decode(cookie)
     RailsCookie.decode cookie
   end
+
+  desc "encode [DATA] [KEY]", "Encode [DATA] as a Rails 3 cookie signed with secret key [KEY]"
+  def encode(data, key)
+    RailsCookie.encode data, key
+  end
+
+  desc "decrypt [COOKIE] [KEY BASE]", "Decrypt Rails 4 [COOKIE] using secret key base [KEY BASE]"
+  method_option :iterations, :type => :numeric, :default => 1000
+  method_option :encrypted_cookie_salt, :default => "encrypted cookie"
+  method_option :encrypted_signed_cookie_salt, :default => "signed encrypted cookie"
+  def decrypt(cookie, secret_key_base)
+    RailsCookie.decrypt cookie, secret_key_base, options[:iterations], options[:encrypted_cookie_salt], options[:encrypted_signed_cookie_salt]
+  end
+
+  desc "encrypt [DATA] [KEY BASE]", "Encrypt Rails 4 [DATA] using secret key base [KEY BASE]"
+  method_option :iterations, :type => :numeric, :default => 1000
+  method_option :encrypted_cookie_salt, :default => "encrypted cookie"
+  method_option :encrypted_signed_cookie_salt, :default => "signed encrypted cookie"
+  def encrypt(data, secret_key_base)
+    RailsCookie.encrypt data, secret_key_base, options[:iterations], options[:encrypted_cookie_salt], options[:encrypted_signed_cookie_salt]
+  end
 end
+
 RailsCookieCmd.start
