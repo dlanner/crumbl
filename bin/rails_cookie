@@ -2,9 +2,17 @@
 
 begin
   require 'rails_cookie'
+  require 'thor'
 rescue LoadError
   require 'rubygems'
   require 'rails_cookie'
+  require 'thor'
 end
 
-RailsCookie.decode ARGV[0], ARGV[1]
+class RailsCookieCmd < Thor
+  desc "decode [cookie]", "Decode a Rails 3 cookie [cookie]"
+  def decode(cookie)
+    RailsCookie.decode cookie
+  end
+end
+RailsCookieCmd.start

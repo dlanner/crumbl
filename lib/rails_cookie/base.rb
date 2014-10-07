@@ -1,10 +1,10 @@
 require 'active_support/all'
+require 'rack'
 
 class RailsCookie
 
-  def self.decode cookie, key
-    cookie_verifier = ActiveSupport::MessageVerifier.new(key)
-    decoded = cookie_verifier.verify URI.unescape(cookie)
+  def self.decode cookie
+    decoded = ::Rack::Session::Cookie::Base64::Marshal.new.decode(cookie)
     puts "Decoded: #{decoded}"
   end
 
@@ -21,5 +21,14 @@ class RailsCookie
     encryptor = ActiveSupport::MessageEncryptor.new(secret, sign_secret)
     decrypted = encryptor.decrypt_and_verify(message)
     puts "Decrypted: #{decrypted}"
+  end
+
+  def self.encrypt data, secret_key_base, iterations=1000, encrypted_cookie_salt="encrypted cookie", encrypted_signed_cookie_salt="signed encrypted cookie"
+    key_generator = ActiveSupport::KeyGenerator.new(secret_key_base, iterations: iterations)
+    secret = key_generator.generate_key(encrypted_cookie_salt)
+    sign_secret = key_generator.generate_key(encrypted_signed_cookie_salt)
+    encryptor = ActiveSupport::MessageEncryptor.new(secret, sign_secret)
+    encrypted = encryptor.encrypt_and_sign(message)
+    puts "Encrypted: #{encrypted}"
   end
 end

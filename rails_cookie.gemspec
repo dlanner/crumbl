@@ -16,5 +16,6 @@ Gem::Specification.new do |s|
   s.homepage    =
     'http://rubygems.org/gems/rails_cookie'
   s.license       = 'MIT'
+  s.add_runtime_dependency "rack"
   s.add_runtime_dependency "activesupport", '~> 3.0.0'
 end
