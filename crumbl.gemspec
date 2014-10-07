@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.files       = ["lib/crumbl.rb", "lib/crumbl/base.rb", "lib/crumbl/version.rb", "bin/crumbl"]
   s.require_paths = ["lib", "bin"]
   s.homepage    =
-    'http://rubygems.org/gems/crumbl'
+    'https://github.com/dlanner/crumbl'
   s.license       = 'MIT'
   s.add_runtime_dependency "rack"
   s.add_runtime_dependency "activesupport", '~> 4.0.0'
