@@ -22,16 +22,16 @@ class RailsCookieCmd < Thor
 
   desc "decrypt [COOKIE] [KEY BASE]", "Decrypt Rails 4 [COOKIE] using secret key base [KEY BASE]"
   method_option :iterations, :type => :numeric, :default => 1000
-  method_option :encrypted_cookie_salt, :default => "encrypted cookie"
-  method_option :encrypted_signed_cookie_salt, :default => "signed encrypted cookie"
+  method_option :encrypted_cookie_salt,         :default => "encrypted cookie"
+  method_option :encrypted_signed_cookie_salt,  :default => "signed encrypted cookie"
   def decrypt(cookie, secret_key_base)
     RailsCookie.decrypt cookie, secret_key_base, options[:iterations], options[:encrypted_cookie_salt], options[:encrypted_signed_cookie_salt]
   end
 
   desc "encrypt [DATA] [KEY BASE]", "Encrypt Rails 4 [DATA] using secret key base [KEY BASE]"
   method_option :iterations, :type => :numeric, :default => 1000
-  method_option :encrypted_cookie_salt, :default => "encrypted cookie"
-  method_option :encrypted_signed_cookie_salt, :default => "signed encrypted cookie"
+  method_option :encrypted_cookie_salt,         :default => "encrypted cookie"
+  method_option :encrypted_signed_cookie_salt,  :default => "signed encrypted cookie"
   def encrypt(data, secret_key_base)
     RailsCookie.encrypt data, secret_key_base, options[:iterations], options[:encrypted_cookie_salt], options[:encrypted_signed_cookie_salt]
   end
