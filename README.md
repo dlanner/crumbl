@@ -1,4 +1,4 @@
 rails_cookie
 ============
 
-CLI gem to make it easier to manipulate encoded or encrypted Rails cookies
+CLI gem to make it easier to manipulate signed or encrypted Rails cookies
