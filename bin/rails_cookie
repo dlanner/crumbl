@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+begin
+  require 'rails_cookie'
+rescue LoadError
+  require 'rubygems'
+  require 'rails_cookie'
+end
+
+RailsCookie.decode ARGV[0], ARGV[1]
