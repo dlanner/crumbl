@@ -3,6 +3,8 @@ crumbl
 
 Command line tool for reading and manipulating encoded or encrypted Rails cookies
 
+[![Build Status](https://api.travis-ci.org/dlanner/crumbl.png?branch=master)](https://travis-ci.org/dlanner/crumbl) 
+
 # Installation
 `gem install crumbl`
 
