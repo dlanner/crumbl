@@ -12,28 +12,30 @@ end
 class CrumblCmd < Thor
   desc "decode [COOKIE]", "Decode a Rails 3 cookie [COOKIE]"
   def decode(cookie)
-    Crumbl.decode cookie
+    puts Crumbl.decode cookie
   end
 
-  desc "encode [DATA] [KEY]", "Encode [DATA] as a Rails 3 cookie signed with secret key [KEY]"
-  def encode(data, key)
-    Crumbl.encode data, key
+  desc "encode [KEY] --data [DATA]", "Encode [DATA] as a Rails 3 cookie signed with secret key [KEY]"
+  method_option :data, :aliases => "-d", :type => :hash, :required => true
+  def encode(key)
+    puts Crumbl.encode options[:data], key
   end
 
-  desc "decrypt [COOKIE] [KEY BASE]", "Decrypt Rails 4 [COOKIE] using secret key base [KEY BASE]"
+  desc "decrypt [KEY BASE] [COOKIE]", "Decrypt Rails 4 [COOKIE] using secret key base [KEY BASE]"
   method_option :iterations,                   :aliases => "-i", :default => Crumbl::DEFAULT_ITERATIONS, :type => :numeric
   method_option :encrypted_cookie_salt,        :aliases => "-e", :default => Crumbl::DEFAULT_ENCRYPTED_COOKIE_SALT
   method_option :encrypted_signed_cookie_salt, :aliases => "-s", :default => Crumbl::DEFAULT_ENCRYPTED_SIGNED_COOKIE_SALT
-  def decrypt(cookie, secret_key_base)
-    Crumbl.decrypt cookie, secret_key_base, options[:iterations], options[:encrypted_cookie_salt], options[:encrypted_signed_cookie_salt]
+  def decrypt(secret_key_base, cookie)
+    puts Crumbl.decrypt cookie, secret_key_base, options[:iterations], options[:encrypted_cookie_salt], options[:encrypted_signed_cookie_salt]
   end
 
-  desc "encrypt [DATA] [KEY BASE]", "Encrypt Rails 4 [DATA] using secret key base [KEY BASE]"
+  desc "encrypt [KEY BASE] --data [DATA]", "Encrypt Rails 4 [DATA] using secret key base [KEY BASE]"
+  method_option :data,                         :aliases => "-d", :type => :hash, :required => true
   method_option :iterations,                   :aliases => "-i", :default => Crumbl::DEFAULT_ITERATIONS, :type => :numeric
   method_option :encrypted_cookie_salt,        :aliases => "-e", :default => Crumbl::DEFAULT_ENCRYPTED_COOKIE_SALT
   method_option :encrypted_signed_cookie_salt, :aliases => "-s", :default => Crumbl::DEFAULT_ENCRYPTED_SIGNED_COOKIE_SALT
-  def encrypt(data, secret_key_base)
-    Crumbl.encrypt data, secret_key_base, options[:iterations], options[:encrypted_cookie_salt], options[:encrypted_signed_cookie_salt]
+  def encrypt(secret_key_base)
+    puts Crumbl.encrypt options[:data], secret_key_base, options[:iterations], options[:encrypted_cookie_salt], options[:encrypted_signed_cookie_salt]
   end
 end
 

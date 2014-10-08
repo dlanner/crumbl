@@ -8,14 +8,12 @@ class Crumbl
   DEFAULT_ENCRYPTED_SIGNED_COOKIE_SALT = "signed encrypted cookie"
 
   def self.decode cookie
-    decoded = ::Rack::Session::Cookie::Base64::Marshal.new.decode(cookie)
-    puts "Decoded: #{decoded}"
+    ::Rack::Session::Cookie::Base64::Marshal.new.decode(cookie)
   end
 
   def self.encode data, key
     cookie_verifier = ActiveSupport::MessageVerifier.new(key)
-    encoded = cookie_verifier.generate data
-    puts "Encoded: #{encoded}"
+    cookie_verifier.generate data
   end
 
   def self.decrypt cookie, secret_key_base, iterations=DEFAULT_ITERATIONS, encrypted_cookie_salt=DEFAULT_ENCRYPTED_COOKIE_SALT, encrypted_signed_cookie_salt=DEFAULT_ENCRYPTED_SIGNED_COOKIE_SALT
@@ -23,8 +21,7 @@ class Crumbl
     secret = key_generator.generate_key(encrypted_cookie_salt)
     sign_secret = key_generator.generate_key(encrypted_signed_cookie_salt)
     encryptor = ActiveSupport::MessageEncryptor.new(secret, sign_secret)
-    decrypted = encryptor.decrypt_and_verify(cookie)
-    puts "Decrypted: #{decrypted}"
+    encryptor.decrypt_and_verify(cookie)
   end
 
   def self.encrypt data, secret_key_base, iterations=DEFAULT_ITERATIONS, encrypted_cookie_salt=DEFAULT_ENCRYPTED_COOKIE_SALT, encrypted_signed_cookie_salt=DEFAULT_ENCRYPTED_SIGNED_COOKIE_SALT
@@ -32,7 +29,6 @@ class Crumbl
     secret = key_generator.generate_key(encrypted_cookie_salt)
     sign_secret = key_generator.generate_key(encrypted_signed_cookie_salt)
     encryptor = ActiveSupport::MessageEncryptor.new(secret, sign_secret)
-    encrypted = encryptor.encrypt_and_sign(data)
-    puts "Encrypted: #{encrypted}"
+    encryptor.encrypt_and_sign(data)
   end
 end
