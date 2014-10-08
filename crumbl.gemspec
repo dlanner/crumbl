@@ -1,17 +1,19 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "crumbl/version"
 
 Gem::Specification.new do |s|
   s.name        = 'crumbl'
   s.version     = Crumbl::VERSION
-  s.executables << 'crumbl'
   s.date        = '2014-10-07'
   s.summary     = "Read and manipulate encoded or encrypted Rails cookies"
   s.description = "Command line tool for reading and manipulating encoded or encrypted Rails cookies"
   s.authors     = ["David Lanner"]
   s.email       = 'dhlanner2@gmail.com'
-  s.files       = ["lib/crumbl.rb", "lib/crumbl/base.rb", "lib/crumbl/version.rb", "bin/crumbl"]
+  s.files       = `git ls-files -z`.split("\x0")
+  s.executables = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  s.test_files  = s.files.grep(%r{^(test|spec|features)/})
   s.require_paths = ["lib", "bin"]
   s.homepage    =
     'https://github.com/dlanner/crumbl'

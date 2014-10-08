@@ -1,7 +1,7 @@
 require 'minitest/autorun'
 require 'crumbl'
 
-class CrumblTest < Minitest::Test
+class CrumblTest < Minitest::Unit::TestCase
   def setup
     @data = {:foo => "bar"}
     @key_base = "secret key base"

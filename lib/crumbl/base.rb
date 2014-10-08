@@ -1,7 +1,7 @@
 require 'active_support/all'
 require 'rack'
 
-class Crumbl
+module Crumbl
 
   DEFAULT_ITERATIONS                   = 1000
   DEFAULT_ENCRYPTED_COOKIE_SALT        = "encrypted cookie"
