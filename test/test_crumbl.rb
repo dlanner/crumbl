@@ -4,6 +4,7 @@ require 'crumbl'
 class CrumblTest < Minitest::Unit::TestCase
   def setup
     @data = {:foo => "bar"}
+    @formatted_data = @data.map { |k,v| "#{k}:\"#{v}\"" }.join(" ")
     @key_base = "secret key base"
     @custom_iterations = 1001
     @custom_encrypted_cookie_salt = @custom_encrypted_signed_cookie_salt = "salty"
@@ -13,6 +14,15 @@ class CrumblTest < Minitest::Unit::TestCase
     encrypted = Crumbl.encrypt(@data, @key_base)
     decrypted = Crumbl.decrypt(encrypted, @key_base)
     assert_equal @data, decrypted
+  end
+
+  def test_executable_decrypt_encrypted
+    encrypted = `./bin/crumbl encrypt "#{@key_base}" --data "#{@formatted_data}"`
+    decrypted = `./bin/crumbl decrypt "#{@key_base}" #{encrypted}`
+    decrypted = eval(decrypted)
+    decrypted = ActiveSupport::HashWithIndifferentAccess.new(decrypted)
+    data = ActiveSupport::HashWithIndifferentAccess.new(@data)
+    assert_equal data, decrypted
   end
 
   def test_custom_iterations_equal
