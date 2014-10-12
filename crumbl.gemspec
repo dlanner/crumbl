@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
   s.name        = 'crumbl'
   s.version     = Crumbl::VERSION
   s.date        = '2014-10-08'
-  s.summary     = "Read and manipulate encoded or encrypted Rails cookies"
-  s.description = "Command line tool for reading and manipulating encoded or encrypted Rails cookies"
+  s.summary     = "Read and write encoded or encrypted Rails cookies"
+  s.description = "Command line tool for reading and writing encoded or encrypted Rails cookies"
   s.authors     = ["David Lanner"]
   s.email       = 'dhlanner2@gmail.com'
   s.files       = `git ls-files -z`.split("\x0")

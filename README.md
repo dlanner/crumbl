@@ -28,7 +28,7 @@ crumbl> {:session_type=>"admin"}
 #### Decode Rails 3 signed cookie:
 
 ```
-# crumble decode BAh7BjoRc2Vzc2lvbl90eXBlSSIJdXNlcgY6BkVU--b5ff66e18316d861087756523d129a17fcc801af
+# crumbl decode BAh7BjoRc2Vzc2lvbl90eXBlSSIJdXNlcgY6BkVU--b5ff66e18316d861087756523d129a17fcc801af
 {"session_type"=>"user"}
 ```
 
