@@ -18,7 +18,7 @@ class CrumblCmd < Thor
   desc "encode [KEY]", "Encode [DATA] as a Rails 3 cookie signed with secret key [KEY]"
   def encode(key)
     puts "Data to encode: "
-    data = get_input
+    data = read_eval_print
     puts Crumbl.encode data, key
   end
 
@@ -36,24 +36,29 @@ class CrumblCmd < Thor
   method_option :encrypted_signed_cookie_salt, :aliases => "-s", :default => Crumbl::DEFAULT_ENCRYPTED_SIGNED_COOKIE_SALT
   def encrypt(secret_key_base)
     puts "Data to encrypt: "
-    data = get_input
+    data = read_eval_print
     puts Crumbl.encrypt data, secret_key_base, options[:iterations], options[:encrypted_cookie_salt], options[:encrypted_signed_cookie_salt]
   end
 
   desc "", "Start interactive mode"
-  def repl
+  def interactive_mode
     loop do
-      result = get_input
-      puts("=> #{result}")
+      read_eval_print
     end
   end
-  default_task :repl
+  default_task :interactive_mode
 
   no_commands do
-    def get_input
+    def read_eval_print
       print "crumbl> "
-      input = STDIN.gets.chomp!
-      eval(input)
+      input = get_input
+      result = eval(input)
+      puts("=> #{result}")
+      result
+    end
+
+    def get_input
+      STDIN.gets.chomp!
     end
   end
 end
