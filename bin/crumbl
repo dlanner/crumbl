@@ -15,10 +15,11 @@ class CrumblCmd < Thor
     puts Crumbl.decode cookie
   end
 
-  desc "encode [KEY] --data [DATA]", "Encode [DATA] as a Rails 3 cookie signed with secret key [KEY]"
-  method_option :data, :aliases => "-d", :type => :hash, :required => true
+  desc "encode [KEY]", "Encode [DATA] as a Rails 3 cookie signed with secret key [KEY]"
   def encode(key)
-    puts Crumbl.encode options[:data], key
+    puts "Data to encode: "
+    data = get_input
+    puts Crumbl.encode data, key
   end
 
   desc "decrypt [KEY BASE] [COOKIE]", "Decrypt Rails 4 [COOKIE] using secret key base [KEY BASE]"
@@ -29,13 +30,31 @@ class CrumblCmd < Thor
     puts Crumbl.decrypt cookie, secret_key_base, options[:iterations], options[:encrypted_cookie_salt], options[:encrypted_signed_cookie_salt]
   end
 
-  desc "encrypt [KEY BASE] --data [DATA]", "Encrypt Rails 4 [DATA] using secret key base [KEY BASE]"
-  method_option :data,                         :aliases => "-d", :type => :hash, :required => true
+  desc "encrypt [KEY BASE]", "Encrypt Rails 4 [DATA] using secret key base [KEY BASE]"
   method_option :iterations,                   :aliases => "-i", :default => Crumbl::DEFAULT_ITERATIONS, :type => :numeric
   method_option :encrypted_cookie_salt,        :aliases => "-e", :default => Crumbl::DEFAULT_ENCRYPTED_COOKIE_SALT
   method_option :encrypted_signed_cookie_salt, :aliases => "-s", :default => Crumbl::DEFAULT_ENCRYPTED_SIGNED_COOKIE_SALT
   def encrypt(secret_key_base)
-    puts Crumbl.encrypt options[:data], secret_key_base, options[:iterations], options[:encrypted_cookie_salt], options[:encrypted_signed_cookie_salt]
+    puts "Data to encrypt: "
+    data = get_input
+    puts Crumbl.encrypt data, secret_key_base, options[:iterations], options[:encrypted_cookie_salt], options[:encrypted_signed_cookie_salt]
+  end
+
+  desc "", "Start interactive mode"
+  def repl
+    loop do
+      result = get_input
+      puts("=> #{result}")
+    end
+  end
+  default_task :repl
+
+  no_commands do
+    def get_input
+      print "crumbl> "
+      input = STDIN.gets.chomp!
+      eval(input)
+    end
   end
 end
 
