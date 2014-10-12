@@ -19,20 +19,25 @@ $ crumbl decrypt "secret key base" RWRWZ0xHSEsrNmx1TlZFOEpmcCtNVEY4QjdKelNETWlNd
 
 #### Encrypt Rails 4 cookie:
 ```
-$ crumbl encrypt "secret key base" --data session_type:admin
-QnprY1BXSlI3WFo1MkxlZmJ6REE3b1N2ZExFaHdqYncvYnNTcHZTL0dQbmZ3RVVwU3hxNmpiVkJtQmNOTW4zYy0tNitvbnhGQ0szbWtIOTU4czNzMnJSUT09--4f397df94a66a3449511485c76e130ac10a35f32
+$ crumbl encrypt "secret key base"
+Data to encrypt: 
+crumbl> {:session_type=>"admin"}
+=> eXV1ckhjbHhiTjMrOFI1VzVWUzNrNnFSQnhFZzdWNE5iS2ZvaFRHRFBtaz0tLVQvNmhGSE5KeENFbWxUd0pHV2RLbnc9PQ==--7061c2425a407e5820d33d68739f54cf8a072ca3
 ```
 
 #### Decode Rails 3 signed cookie:
 
 ```
-$ crumbl decode BAh7BkkiEXNlc3Npb25fdHlwZQY6BkVUSSIJdXNlcgY7AFQ=--ff2751f14c049e970cd817b6bbb6575b7c8a7bd8
+# crumble decode BAh7BjoRc2Vzc2lvbl90eXBlSSIJdXNlcgY6BkVU--b5ff66e18316d861087756523d129a17fcc801af
 {"session_type"=>"user"}
 ```
 
 #### Encode Rails 3 signed cookie:
 
 ```
-$ crumbl encode "signing key" --data session_type:admin
-BAh7BkkiEXNlc3Npb25fdHlwZQY6BkVUSSIKYWRtaW4GOwBU--a44fc16d8c2f185e4b667c4276e790ae1d40c505
+$ crumbl encode "signing key"
+Data to encode: 
+crumbl> {:session_type=>"admin"}
+=> BAh7BjoRc2Vzc2lvbl90eXBlSSIKYWRtaW4GOgZFVA==--c2d31489de15c835a8984011f0d36f44679ad5ad
+
 ```
