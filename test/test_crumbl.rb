@@ -10,47 +10,67 @@ class CrumblTest < Minitest::Unit::TestCase
   end
 
   def test_decrypt_encrypted
-    encrypted = Crumbl.encrypt(@data, @key_base)
-    decrypted = Crumbl.decrypt(encrypted, @key_base)
+    encrypted = Crumbl.new.encrypt(@data, @key_base)
+    decrypted = Crumbl.new.decrypt(encrypted, @key_base)
     assert_equal @data, decrypted
   end
 
   def test_custom_iterations_equal
-    encrypted = Crumbl.encrypt(@data, @key_base, @custom_iterations)
-    decrypted = Crumbl.decrypt(encrypted, @key_base, @custom_iterations)
+    crumbl = Crumbl.new do |opts|
+      opts[:iterations]                   = @custom_iterations
+      opts[:encrypted_cookie_salt]        = @custom_encrypted_cookie_salt
+      opts[:encrypted_signed_cookie_salt] = @custom_encrypted_signed_cookie_salt
+    end
+    encrypted = crumbl.encrypt(@data, @key_base)
+    decrypted = crumbl.decrypt(encrypted, @key_base)
     assert_equal @data, decrypted
   end
 
   def test_custom_iterations_not_equal
-    encrypted = Crumbl.encrypt(@data, @key_base)
+    encrypted = Crumbl.new.encrypt(@data, @key_base)
     assert_raises ActiveSupport::MessageVerifier::InvalidSignature do
-      Crumbl.decrypt(encrypted, @key_base, @custom_iterations)
+      crumbl = Crumbl.new do |opts|
+        opts[:iterations] = @custom_iterations
+      end
+      crumbl.decrypt(encrypted, @key_base)
     end
   end
 
   def test_custom_encrypted_cookie_salt_equal
-    encrypted = Crumbl.encrypt(@data, @key_base, Crumbl::DEFAULT_ITERATIONS, @custom_encrypted_cookie_salt)
-    decrypted = Crumbl.decrypt(encrypted, @key_base, Crumbl::DEFAULT_ITERATIONS, @custom_encrypted_cookie_salt)
+    crumbl = Crumbl.new do |opts|
+      opts[:encrypted_cookie_salt] = @custom_encrypted_cookie_salt
+    end
+    encrypted = crumbl.encrypt(@data, @key_base)
+    decrypted = crumbl.decrypt(encrypted, @key_base)
     assert_equal @data, decrypted
   end
 
   def test_custom_encrypted_cookie_salt_not_equal
-    encrypted = Crumbl.encrypt(@data, @key_base)
+    encrypted = Crumbl.new.encrypt(@data, @key_base)
     assert_raises ActiveSupport::MessageEncryptor::InvalidMessage do
-      Crumbl.decrypt(encrypted, @key_base, Crumbl::DEFAULT_ITERATIONS, @custom_encrypted_cookie_salt)
+      crumbl = Crumbl.new do |opts|
+        opts[:encrypted_cookie_salt] = @custom_encrypted_cookie_salt
+      end
+      crumbl.decrypt(encrypted, @key_base)
     end
   end
 
   def test_custom_encrypted_signed_cookie_salt_equal
-    encrypted = Crumbl.encrypt(@data, @key_base, Crumbl::DEFAULT_ITERATIONS, Crumbl::DEFAULT_ENCRYPTED_COOKIE_SALT, @custom_encrypted_signed_cookie_salt)
-    decrypted = Crumbl.decrypt(encrypted, @key_base, Crumbl::DEFAULT_ITERATIONS, Crumbl::DEFAULT_ENCRYPTED_COOKIE_SALT, @custom_encrypted_signed_cookie_salt)
+    crumbl = Crumbl.new do |opts|
+      opts[:encrypted_signed_cookie_salt] = @custom_encrypted_signed_cookie_salt
+    end
+    encrypted = crumbl.encrypt(@data, @key_base)
+    decrypted = crumbl.decrypt(encrypted, @key_base)
     assert_equal @data, decrypted
   end
 
   def test_custom_encrypted_signed_cookie_salt_not_equal
-    encrypted = Crumbl.encrypt(@data, @key_base)
+    encrypted = Crumbl.new.encrypt(@data, @key_base)
     assert_raises ActiveSupport::MessageVerifier::InvalidSignature do
-      Crumbl.decrypt(encrypted, @key_base, Crumbl::DEFAULT_ITERATIONS, Crumbl::DEFAULT_ENCRYPTED_COOKIE_SALT, @custom_encrypted_signed_cookie_salt)
+      crumbl = Crumbl.new do |opts|
+        opts[:encrypted_signed_cookie_salt] = @custom_encrypted_signed_cookie_salt
+      end
+      crumbl.decrypt(encrypted, @key_base)
     end
   end
 end

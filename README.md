@@ -1,7 +1,7 @@
 crumbl
 ============
 
-Command line tool for reading and manipulating encoded or encrypted Rails cookies
+Command line tool for reading and writing encoded or encrypted Rails sessions
 
 [![Build Status](https://api.travis-ci.org/dlanner/crumbl.png?branch=master)](https://travis-ci.org/dlanner/crumbl) 
 

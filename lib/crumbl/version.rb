@@ -1,3 +1,3 @@
-module Crumbl
-  VERSION = "0.0.4"
+class Crumbl
+  VERSION = "0.0.5"
 end

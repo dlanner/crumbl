@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.homepage    =
     'https://github.com/dlanner/crumbl'
   s.license       = 'MIT'
+  s.add_development_dependency "minitest",  "~> 5"
   s.add_runtime_dependency "rack"
   s.add_runtime_dependency "thor"
   s.add_runtime_dependency "activesupport", '~> 4.0.0'

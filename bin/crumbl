@@ -12,33 +12,43 @@ end
 class CrumblCmd < Thor
   desc "decode [COOKIE]", "Decode a Rails 3 cookie [COOKIE]"
   def decode(cookie)
-    puts Crumbl.decode cookie
+    puts Crumbl.new.decode cookie
   end
 
   desc "encode [KEY]", "Encode [DATA] as a Rails 3 cookie signed with secret key [KEY]"
   def encode(key)
     puts "Data to encode: "
     data = read_eval
-    encoded = Crumbl.encode data, key
+    encoded = Crumbl.new.encode data, key
     show_result encoded
   end
 
   desc "decrypt [KEY BASE] [COOKIE]", "Decrypt Rails 4 [COOKIE] using secret key base [KEY BASE]"
-  method_option :iterations,                   :aliases => "-i", :default => Crumbl::DEFAULT_ITERATIONS, :type => :numeric
-  method_option :encrypted_cookie_salt,        :aliases => "-e", :default => Crumbl::DEFAULT_ENCRYPTED_COOKIE_SALT
-  method_option :encrypted_signed_cookie_salt, :aliases => "-s", :default => Crumbl::DEFAULT_ENCRYPTED_SIGNED_COOKIE_SALT
+  method_option :iterations,                   :aliases => "-i",  :type => :numeric
+  method_option :encrypted_cookie_salt,        :aliases => "-e"
+  method_option :encrypted_signed_cookie_salt, :aliases => "-s"
   def decrypt(secret_key_base, cookie)
-    puts Crumbl.decrypt cookie, secret_key_base, options[:iterations], options[:encrypted_cookie_salt], options[:encrypted_signed_cookie_salt]
+    crumbl = Crumbl.new do |opts|
+      opts[:iterations]                   = options[:iterations]
+      opts[:encrypted_cookie_salt]        = options[:encrypted_cookie_salt]
+      opts[:encrypted_signed_cookie_salt] = options[:encrypted_signed_cookie_salt]
+    end
+    puts crumbl.decrypt cookie, secret_key_base
   end
 
   desc "encrypt [KEY BASE]", "Encrypt Rails 4 [DATA] using secret key base [KEY BASE]"
-  method_option :iterations,                   :aliases => "-i", :default => Crumbl::DEFAULT_ITERATIONS, :type => :numeric
-  method_option :encrypted_cookie_salt,        :aliases => "-e", :default => Crumbl::DEFAULT_ENCRYPTED_COOKIE_SALT
-  method_option :encrypted_signed_cookie_salt, :aliases => "-s", :default => Crumbl::DEFAULT_ENCRYPTED_SIGNED_COOKIE_SALT
+  method_option :iterations,                   :aliases => "-i", :type => :numeric
+  method_option :encrypted_cookie_salt,        :aliases => "-e"
+  method_option :encrypted_signed_cookie_salt, :aliases => "-s"
   def encrypt(secret_key_base)
     puts "Data to encrypt: "
     data = read_eval
-    encrypted = Crumbl.encrypt data, secret_key_base, options[:iterations], options[:encrypted_cookie_salt], options[:encrypted_signed_cookie_salt]
+    crumbl = Crumbl.new do |opts|
+      opts[:iterations]                   = options[:iterations]
+      opts[:encrypted_cookie_salt]        = options[:encrypted_cookie_salt]
+      opts[:encrypted_signed_cookie_salt] = options[:encrypted_signed_cookie_salt]
+    end
+    encrypted = crumbl.encrypt data, secret_key_base
     show_result encrypted
   end
 
