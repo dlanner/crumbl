@@ -1,5 +1,4 @@
 require 'active_support/all'
-require 'rack'
 
 class Crumbl
 
@@ -18,7 +17,7 @@ class Crumbl
   end
 
   def decode cookie
-    ::Rack::Session::Cookie::Base64::Marshal.new.decode(cookie)
+    Marshal.load(Base64.decode64(cookie))
   end
 
   def encode data, key
