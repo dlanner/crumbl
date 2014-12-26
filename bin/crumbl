@@ -56,7 +56,11 @@ class CrumblCmd < Thor
     def read_eval
       print "crumbl> "
       input = get_input
-      result = eval(input)
+      if input.is_json?
+        result = JSON.parse(input).to_s
+      else
+        result = input
+      end
     end
 
     def show_result result
