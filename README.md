@@ -39,8 +39,8 @@ crumbl> {:session_type=>"admin"}
 #### Decode Rails 3 signed cookie:
 
 ```
-$ crumbl decode BAhJIh17OnNlc3Npb25fdHlwZT0+ImFkbWluIn0GOgZFVA==--4f4881f111cd39dc06b8189580088b1472daf045
-{:session_type=>"admin"}
+$ crumbl decode BAhJIhx7OnNlc3Npb25fdHlwZT0+InVzZXIifQY6BkVU--63891186505fa396a865465f46f904dba0423df0
+{:session_type=>"user"}
 ```
 
 #### Encode Rails 3 signed cookie:
