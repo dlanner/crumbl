@@ -10,26 +10,37 @@ Command line tool for reading and writing encoded or encrypted Rails sessions
 
 # Usage
 
+```
+$ crumbl help
+Commands:
+  crumbl decode [COOKIE]              # Decode a Rails 3 cookie [COOKIE]
+  crumbl decrypt [KEY BASE] [COOKIE]  # Decrypt Rails 4 [COOKIE] using secret key base [KEY BASE]
+  crumbl encode [KEY]                 # Encode [DATA] as a Rails 3 cookie signed with secret key [KEY]
+  crumbl encrypt [KEY BASE]           # Encrypt Rails 4 [DATA] using secret key base [KEY BASE]
+  crumbl help [COMMAND]               # Describe available commands or one specific command
+```
+
 #### Decrypt Rails 4 encrypted cookie:
 
 ```
-$ crumbl decrypt "secret key base" RWRWZ0xHSEsrNmx1TlZFOEpmcCtNVEY4QjdKelNETWlNdVV0TnlCZU0zTnA4ejZka2ZCR2EyQStydGhOaTRySC0tOEQyMFc2SkpLejRidjV5V1ZBUXpEUT09--67e625ac91a2fecc9a3da7146a3a92b667e0ed17
-{"session_type"=>"user"}
+$ crumbl decrypt "secret key base" V25qdmEwZVp3ME9HNXU5ZkxzM2srQlFrcU1FQ3dGYit1YmtlRVVnVVRROD0tLTI0U2t1cXZhNDhucGtxMnIyVTFXN2c9PQ==--62bb4aa196b53de5cc993e6377be37d704aaf372
+{:session_type=>"user"}
 ```
 
 #### Encrypt Rails 4 cookie:
+
 ```
 $ crumbl encrypt "secret key base"
 Data to encrypt: 
 crumbl> {:session_type=>"admin"}
-=> eXV1ckhjbHhiTjMrOFI1VzVWUzNrNnFSQnhFZzdWNE5iS2ZvaFRHRFBtaz0tLVQvNmhGSE5KeENFbWxUd0pHV2RLbnc9PQ==--7061c2425a407e5820d33d68739f54cf8a072ca3
+=> Z1FpV2FHRjVXQmtRQUJiamo4Vm1XSThpK0xVMlVNSUVFblpRODAvcFA0WT0tLWNlSW4zdzM1VGNmNHZNR1pSVUxMaUE9PQ==--da1cab0cf5b4a6429c9afba06294dcee5da32172
 ```
 
 #### Decode Rails 3 signed cookie:
 
 ```
-# crumbl decode BAh7BjoRc2Vzc2lvbl90eXBlSSIJdXNlcgY6BkVU--b5ff66e18316d861087756523d129a17fcc801af
-{"session_type"=>"user"}
+# crumbl decode BAhJIh17OnNlc3Npb25fdHlwZT0+ImFkbWluIn0GOgZFVA==--4f4881f111cd39dc06b8189580088b1472daf045
+{:session_type=>"admin"}
 ```
 
 #### Encode Rails 3 signed cookie:
@@ -38,6 +49,16 @@ crumbl> {:session_type=>"admin"}
 $ crumbl encode "signing key"
 Data to encode: 
 crumbl> {:session_type=>"admin"}
-=> BAh7BjoRc2Vzc2lvbl90eXBlSSIKYWRtaW4GOgZFVA==--c2d31489de15c835a8984011f0d36f44679ad5ad
+=> BAhJIh17OnNlc3Npb25fdHlwZT0+ImFkbWluIn0GOgZFVA==--4f4881f111cd39dc06b8189580088b1472daf045
+```
 
+# Options
+
+#### JSON Input:
+
+```
+$ crumbl encrypt "secret key base"
+Data to encrypt: 
+crumbl> {"allowed_ip": "1.2.3.4"}
+=> K0hjc1FYdW9hUWVkRFA2MFhHVFE4dmhWalVCSndITWtlanhVRW1ZYmM3TT0tLXhvQm1EZWZhRnZLT3E3SFgzQTFhU3c9PQ==--b9e14fdf3c4f216824a3336079853b63cbaf5d47
 ```

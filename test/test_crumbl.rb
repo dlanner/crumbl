@@ -12,7 +12,7 @@ class CrumblTest < Minitest::Unit::TestCase
   def test_decrypt_encrypted
     encrypted = Crumbl.new.encrypt(@data, @key_base)
     decrypted = Crumbl.new.decrypt(encrypted, @key_base)
-    assert_equal @data, decrypted
+    assert_equal @data, eval(decrypted)
   end
 
   def test_custom_iterations_equal
@@ -23,7 +23,7 @@ class CrumblTest < Minitest::Unit::TestCase
     end
     encrypted = crumbl.encrypt(@data, @key_base)
     decrypted = crumbl.decrypt(encrypted, @key_base)
-    assert_equal @data, decrypted
+    assert_equal @data, eval(decrypted)
   end
 
   def test_custom_iterations_not_equal
@@ -42,7 +42,7 @@ class CrumblTest < Minitest::Unit::TestCase
     end
     encrypted = crumbl.encrypt(@data, @key_base)
     decrypted = crumbl.decrypt(encrypted, @key_base)
-    assert_equal @data, decrypted
+    assert_equal @data, eval(decrypted)
   end
 
   def test_custom_encrypted_cookie_salt_not_equal
@@ -61,7 +61,7 @@ class CrumblTest < Minitest::Unit::TestCase
     end
     encrypted = crumbl.encrypt(@data, @key_base)
     decrypted = crumbl.decrypt(encrypted, @key_base)
-    assert_equal @data, decrypted
+    assert_equal @data, eval(decrypted)
   end
 
   def test_custom_encrypted_signed_cookie_salt_not_equal
@@ -72,5 +72,12 @@ class CrumblTest < Minitest::Unit::TestCase
       end
       crumbl.decrypt(encrypted, @key_base)
     end
+  end
+
+  def test_accepts_json
+    json_data = @data.to_json.to_s
+    encrypted = Crumbl.new.encrypt(json_data, @key_base)
+    decrypted = Crumbl.new.decrypt(encrypted, @key_base)
+    assert_equal HashWithIndifferentAccess.new(@data), HashWithIndifferentAccess.new(JSON.parse(decrypted))
   end
 end

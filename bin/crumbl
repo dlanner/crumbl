@@ -57,7 +57,7 @@ class CrumblCmd < Thor
       print "crumbl> "
       input = get_input
       if input.is_json?
-        result = JSON.parse(input).to_s
+        result = JSON.parse(input)
       else
         result = input
       end

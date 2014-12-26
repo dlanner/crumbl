@@ -32,7 +32,7 @@ class Crumbl
 
   def encrypt data, secret_key_base
     encryptor = build_message_encryptor(secret_key_base)
-    encryptor.encrypt_and_sign(data)
+    encryptor.encrypt_and_sign(data.to_s)
   end
 
   private
