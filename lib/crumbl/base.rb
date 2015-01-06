@@ -27,7 +27,7 @@ class Crumbl
 
   def decrypt cookie, secret_key_base
     encryptor = build_message_encryptor(secret_key_base)
-    encryptor.decrypt_and_verify(cookie)
+    encryptor.decrypt_and_verify(CGI.unescape(cookie))
   end
 
   def encrypt data, secret_key_base
